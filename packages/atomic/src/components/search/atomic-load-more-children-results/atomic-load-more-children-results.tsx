@@ -14,7 +14,8 @@ import {Bindings} from '../atomic-search-interface/atomic-search-interface';
 
 /**
  * The `atomic-load-more-children-results` component allows to load the full collection for a folded result.
- * @part button - The wrapper for the entire facet.
+ *
+ * @part button - The button used to load more results.
  */
 @Component({
   tag: 'atomic-load-more-children-results',
@@ -39,9 +40,9 @@ export class AtomicLoadMoreChildrenResults {
    *
    * @defaultValue `Load all results`
    */
-  @Prop() public label = '';
+  @Prop() public label = 'load-all-results';
 
-  private getCollection() {
+  private get collection() {
     if (!this.result.raw.foldingcollection) {
       return null;
     }
@@ -53,30 +54,30 @@ export class AtomicLoadMoreChildrenResults {
 
   private loadFullCollection() {
     this.host.dispatchEvent(
-      buildCustomEvent('atomic/loadCollection', this.getCollection())
+      buildCustomEvent('atomic/loadCollection', this.collection)
     );
   }
 
-  private hasMoreResults() {
-    return this.getCollection()?.moreResultsAvailable;
+  private get hasMoreResults() {
+    return this.collection?.moreResultsAvailable;
   }
 
-  private isLoading() {
-    return Boolean(this.getCollection()?.isLoadingMoreResults);
+  private get isLoading() {
+    return Boolean(this.collection?.isLoadingMoreResults);
   }
 
-  private hasResults() {
-    return Boolean(this.getCollection()?.children.length);
+  private get hasChildren() {
+    return Boolean(this.collection?.children.length);
   }
 
-  private getButtonClass() {
-    if (this.hasResults()) {
+  private get buttonClass() {
+    if (this.hasChildren) {
       return 'has-children';
     }
     return '';
   }
 
-  private getWrapperClass() {
+  private get wrapperClass() {
     return getResultDisplayClasses(
       'list',
       this.displayConfig.density,
@@ -85,21 +86,21 @@ export class AtomicLoadMoreChildrenResults {
   }
 
   public render() {
-    if (!this.foldedResultListState || !this.getCollection()) {
+    if (!this.foldedResultListState || !this.collection) {
       return null;
     }
 
     return (
-      <div class={this.getWrapperClass()}>
-        {this.hasMoreResults() && (
+      <div class={this.wrapperClass}>
+        {this.hasMoreResults && (
           <Button
             part="button"
             style="text-primary"
             onClick={() => this.loadFullCollection()}
-            class={this.getButtonClass()}
-            disabled={this.isLoading()}
+            class={this.buttonClass}
+            disabled={this.isLoading}
           >
-            {this.label || this.bindings.i18n.t('load-all-results')}
+            {this.bindings.i18n.t(this.label)}
           </Button>
         )}
       </div>
