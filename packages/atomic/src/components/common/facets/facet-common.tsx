@@ -47,6 +47,8 @@ import {AnyBindings} from '../interface/bindings';
 import {FacetInfo} from './facet-common-store';
 import {initializePopover} from '../../search/facets/atomic-popover/popover-type';
 
+export const refineModalAttribute = 'is-refine-modal';
+
 export type FacetDisplayValues = 'checkbox' | 'link' | 'box';
 
 export type PropsOnAllFacets = {
@@ -332,7 +334,17 @@ export class FacetCommon {
     if (this.host.isConnected) {
       return;
     }
+
+    if (this.host.hasAttribute(refineModalAttribute)) {
+      return;
+    }
+
     this.dependenciesManager?.stopWatching();
+    this.facet.remove();
+    this.bindings.store.unregisterFacet('facets', {
+      facetId: this.facetId!,
+      element: this.host,
+    });
   }
 
   public componentShouldUpdate(

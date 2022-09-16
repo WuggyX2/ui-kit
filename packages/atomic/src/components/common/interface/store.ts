@@ -34,6 +34,10 @@ export interface AtomicCommonStore<StoreData extends AtomicCommonStoreData>
     facetType: T,
     data: StoreData[T][U] & {facetId: U; element: HTMLElement}
   ): void;
+  unregisterFacet<T extends FacetType, U extends string>(
+    facetType: T,
+    data: {facetId: U; element: HTMLElement}
+  ): void;
 }
 
 export function createAtomicCommonStore<
@@ -56,6 +60,21 @@ export function createAtomicCommonStore<
 
       stencilStore.state[facetType][data.facetId] = data;
       stencilStore.state.facetElements.push(data.element);
+    },
+
+    unregisterFacet<T extends FacetType, U extends string>(
+      facetType: T,
+      data: {facetId: U; element: HTMLElement}
+    ) {
+      if (!stencilStore.state[facetType][data.facetId]) {
+        return;
+      }
+
+      delete stencilStore.state[facetType][data.facetId];
+      stencilStore.state.facetElements =
+        stencilStore.state.facetElements.filter(
+          (element) => element !== data.element
+        );
     },
 
     getIconAssetsPath() {
