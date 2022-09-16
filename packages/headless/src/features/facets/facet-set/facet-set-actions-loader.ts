@@ -15,6 +15,8 @@ import {
   UpdateFacetSortCriterionActionCreatorPayload,
   updateFreezeCurrentValues,
   UpdateFreezeCurrentValuesActionCreatorPayload,
+  UnregisterFacetActionCreatorPayload,
+  unregisterFacet,
 } from './facet-set-actions';
 import {
   updateFacetAutoSelection,
@@ -52,6 +54,16 @@ export interface FacetSetActionCreators {
   registerFacet(
     payload: RegisterFacetActionCreatorPayload
   ): PayloadAction<RegisterFacetActionCreatorPayload>;
+
+  /**
+   * Unregisters a facet in the facet set.
+   *
+   * @param facetId - The unique identifier of the facet (e.g., `"1"`).
+   * @returns A dispatchable action.
+   */
+  unregisterFacet(
+    facetId: UnregisterFacetActionCreatorPayload
+  ): PayloadAction<UnregisterFacetActionCreatorPayload>;
 
   /**
    * Toggles a facet value. If the value does not exist, it is added.
@@ -127,6 +139,7 @@ export function loadFacetSetActions(
   return {
     deselectAllFacetValues,
     registerFacet,
+    unregisterFacet,
     toggleSelectFacetValue,
     updateFacetIsFieldExpanded,
     updateFacetNumberOfValues,

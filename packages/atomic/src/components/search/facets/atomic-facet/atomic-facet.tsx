@@ -230,6 +230,8 @@ export class AtomicFacet implements InitializableComponent, BaseFacet<Facet> {
 
   public disconnectedCallback() {
     this.facetCommon.disconnectedCallback();
+    // TODO: add condition
+    // this.facet.remove();
   }
 
   public componentShouldUpdate(

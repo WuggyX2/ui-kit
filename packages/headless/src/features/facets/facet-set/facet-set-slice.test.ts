@@ -9,6 +9,7 @@ import {
   updateFacetIsFieldExpanded,
   updateFreezeCurrentValues,
   RegisterFacetActionCreatorPayload,
+  unregisterFacet,
 } from './facet-set-actions';
 import {buildMockFacetValue} from '../../../test/mock-facet-value';
 import {buildMockSearch} from '../../../test/mock-search';
@@ -114,6 +115,16 @@ describe('facet-set slice', () => {
     const finalState = facetSetReducer(state, action);
 
     expect(finalState[id].field).toBe(state[id].field);
+  });
+
+  it('allows to unregister a facet', () => {
+    const id = '1';
+    state[id] = buildMockFacetRequest();
+
+    const action = unregisterFacet(id);
+    const finalState = facetSetReducer(state, action);
+
+    expect(finalState[id]).toBeFalsy();
   });
 
   it('allows to restore a facet set on history change', () => {

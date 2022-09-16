@@ -2,6 +2,7 @@ import {createReducer} from '@reduxjs/toolkit';
 import {change} from '../../history/history-actions';
 import {
   registerFacet,
+  unregisterFacet,
   toggleSelectFacetValue,
   deselectAllFacetValues,
   updateFacetSortCriterion,
@@ -47,6 +48,12 @@ export const facetSetReducer = createReducer(
         }
 
         state[facetId] = buildFacetRequest(action.payload);
+      })
+      .addCase(unregisterFacet, (state, action) => {
+        if (action.payload in state) {
+          delete state[action.payload];
+          return;
+        }
       })
       .addCase(change.fulfilled, (_, action) => {
         if (!action.payload) {

@@ -8,6 +8,7 @@ import {
   updateFacetSortCriterion,
   updateFacetNumberOfValues,
   updateFacetIsFieldExpanded,
+  unregisterFacet,
 } from '../../../../features/facets/facet-set/facet-set-actions';
 import {
   facetRequestSelector,
@@ -138,6 +139,11 @@ export interface CoreFacet extends Controller {
    * Disables the facet. I.e., prevents it from filtering results.
    */
   disable(): void;
+
+  /**
+   * Removes the facet from the Headless test and the facet request. You should create a new controller instance after calling this method.
+   */
+  remove(): void;
 
   /**
    * The state of the `Facet` controller.
@@ -395,6 +401,10 @@ export function buildCoreFacet(
 
     disable() {
       dispatch(disableFacet(facetId));
+    },
+
+    remove() {
+      dispatch(unregisterFacet(facetId));
     },
 
     get state() {

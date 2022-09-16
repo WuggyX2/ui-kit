@@ -98,6 +98,14 @@ export const registerFacet = createAction(
     validatePayload(payload, facetRegistrationOptionsDefinition)
 );
 
+export type UnregisterFacetActionCreatorPayload = string;
+
+export const unregisterFacet = createAction(
+  'facet/unregister',
+  (facetId: UnregisterFacetActionCreatorPayload) =>
+    validatePayload(facetId, facetIdDefinition)
+);
+
 export interface ToggleSelectFacetValueActionCreatorPayload {
   /**
    * The unique identifier of the facet (e.g., `"1"`).
