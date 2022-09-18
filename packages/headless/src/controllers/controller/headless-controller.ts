@@ -13,6 +13,7 @@ export interface Subscribable {
 
 export interface Controller extends Subscribable {
   readonly state: {};
+  unsubscribeAll(): void;
 }
 
 export function buildController<T extends object>(
@@ -59,6 +60,10 @@ export function buildController<T extends object>(
           unsubscribe && unsubscribe();
         }
       };
+    },
+
+    unsubscribeAll() {
+      listeners.clear();
     },
 
     get state() {

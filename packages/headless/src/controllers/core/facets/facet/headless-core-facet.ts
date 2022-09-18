@@ -404,6 +404,7 @@ export function buildCoreFacet(
     },
 
     remove() {
+      controller.unsubscribeAll();
       dispatch(unregisterFacet(facetId));
     },
 
